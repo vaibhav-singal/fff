@@ -6,7 +6,6 @@ var gameState = "home";
 var backArrow, backArrowImage;
 var background, backgroundImage;
 var boyRunning, boyRunningAnimation;
-var boy_jumping;
 var boy_dead;
 var barrier, barrierImage;
 var coins, coinsImage;
@@ -33,75 +32,57 @@ var backgroundLevel2, backgroundLevel2Sprite;
 function preload() {
   // we will load the images with a variable
 
-  stormImage = loadImage("download.jpg");
-  boyImage = loadImage("Idle (8).png");
-  playButton = loadImage("th.png");
-  instructionsButton = loadImage("instructions.png");
-  backArrowImage = loadImage("back arrow.png");
-  backgroundImage = loadImage("fffBackground.jpg");
-  backgroundLevel2 = loadImage("backgron(level2).png");
+  // stormImage = loadImage("Images/backgrounds/download.jpg");
+  boyImage = loadImage("Images/basic images/Idle (8).png");
+  playButton = loadImage("Images/basic images/th.png");
+  instructionsButton = loadImage("Images/basic images/instructions.png");
+  backArrowImage = loadImage("Images/basic images/back arrow.png");
+  backgroundImage = loadImage("Images/backgrounds/fffBackground.jpg");
+  backgroundLevel2 = loadImage("Images/backgrounds/backgron(level2).png");
   boyRunningAnimation = loadAnimation(
-    "Run (1).png",
-    "Run (2).png",
-    "Run (3).png",
-    "Run (4).png",
-    "Run (5).png",
-    "Run (6).png",
-    "Run (7).png",
-    "Run (8).png",
-    "Run (9).png",
-    "Run (10).png",
-    "Run (11).png",
-    "Run (12).png",
-    "Run (13).png",
-    "Run (14).png",
-    "Run (15).png"
+    "Images/boyRunning/Run (1).png",
+    "Images/boyRunning/Run (2).png",
+    "Images/boyRunning/Run (3).png",
+    "Images/boyRunning/Run (4).png",
+    "Images/boyRunning/Run (5).png",
+    "Images/boyRunning/Run (6).png",
+    "Images/boyRunning/Run (7).png",
+    "Images/boyRunning/Run (8).png",
+    "Images/boyRunning/Run (9).png",
+    "Images/boyRunning/Run (10).png",
+    "Images/boyRunning/Run (11).png",
+    "Images/boyRunning/Run (12).png",
+    "Images/boyRunning/Run (13).png",
+    "Images/boyRunning/Run (14).png",
+    "Images/boyRunning/Run (15).png"
   );
-  boy_jumping = loadAnimation(
-    "Jump (1).png",
-    "Jump (2).png",
-    "Jump (3).png",
-    "Jump (4).png",
-    "Jump (5).png",
-    "Jump (6).png",
-    "Jump (7).png",
-    "Jump (8).png",
-    "Jump (9).png",
-    "Jump (10).png",
-    "Jump (11).png",
-    "Jump (12).png",
-    "Jump (13).png",
-    "Jump (14).png",
-    "Jump (15).png"
-  );
+
   boy_dead = loadAnimation(
-    "Dead (1).png",
-    "Dead (2).png",
-    "Dead (3).png",
-    "Dead (4).png",
-    "Dead (5).png",
-    "Dead (6).png",
-    "Dead (7).png",
-    "Dead (8).png",
-    "Dead (10).png",
-    "Dead (11).png",
-    "Dead (12).png",
-    "Dead (13).png",
-    "Dead (14).png",
-    "Dead (15).png"
+    "Images/boyDead/Dead (1).png",
+    "Images/boyDead/Dead (2).png",
+    "Images/boyDead/Dead (3).png",
+    "Images/boyDead/Dead (4).png",
+    "Images/boyDead/Dead (5).png",
+    "Images/boyDead/Dead (6).png",
+    "Images/boyDead/Dead (7).png",
+    "Images/boyDead/Dead (8).png",
+    "Images/boyDead/Dead (10).png",
+    "Images/boyDead/Dead (11).png",
+    "Images/boyDead/Dead (12).png",
+    "Images/boyDead/Dead (13).png",
+    "Images/boyDead/Dead (14).png",
+    "Images/boyDead/Dead (15).png"
   );
-  barrierImage = loadImage("BARRIER.png");
-  coinsImage = loadImage("COINS.png");
-  destroyedCycleImage = loadImage("DESTROYED CIRCLE.png");
-  destroyedCarImage = loadImage("DESTROYES CAR.png");
-  backgroundSound = loadSound("BACKGROUND.mp3");
-  dieSound = loadSound("DIE.mp3");
-  stormGif = loadImage("stormImage.jpg");
-  treeLog = loadImage("tree log2.png");
-  blackScreen = loadImage("maxresdefault.jpg");
-  gameOverImage = loadImage("gameOver.png");
-  returnImage = loadImage("Homepage button.png");
-  
+  barrierImage = loadImage("Images/obstacles/BARRIER.png");
+  coinsImage = loadImage("Images/basic images/COINS.png");
+  destroyedCycleImage = loadImage("Images/obstacles/DESTROYED CIRCLE.png");
+  destroyedCarImage = loadImage("Images/obstacles/DESTROYES CAR.png");
+  backgroundSound = loadSound("sounds/BACKGROUND.mp3");
+  dieSound = loadSound("sounds/DIE.mp3");
+  stormGif = loadImage("Images/backgrounds/stormImage.jpg");
+  treeLog = loadImage("Images/obstacles/tree log2.png");
+  gameOverImage = loadImage("Images/basic images/gameOverImage.png");
+  returnImage = loadImage("Images/basic images/reloadIcon.png");
 }
 
 function setup() {
@@ -124,36 +105,34 @@ function setup() {
   backArrow.scale = 0.1;
 
   boyRunning = createSprite(width / 2 - 325, height / 2 + 10);
-  boyRunning.addAnimation("test", boyRunningAnimation);
+  boyRunning.addAnimation("running", boyRunningAnimation);
+  boyRunning.addAnimation("dead", boy_dead);
   boyRunning.scale = 0.4;
   boyRunning.debug = true;
   boyRunning.setCollider("rectangle", -200, 0, 500, 10, 90);
 
   backgroundSprite = createSprite(width / 2, height / 2);
   backgroundSprite.addImage(backgroundImage);
-  backgroundSprite.velocityX = -10;
+  
   backgroundSprite.scale = 2;
 
   invisibleGround = createSprite(width / 2, height / 2 + 150, windowWidth, 20);
   invisibleGround.visible = false;
 
-  gameOverSprite = createSprite(width/2+200,height/2);
+  gameOverSprite = createSprite(width / 2 + 50, height / 2 - 125);
   gameOverSprite.addImage(gameOverImage);
-  gameOverSprite.scale = 1.5;
+  //gameOverSprite.scale = 1.5;
 
-  returnPage = createSprite(width/2 + 50, height/2 -125);
+  returnPage = createSprite(width / 2 + 50, height / 2);
   returnPage.addImage(returnImage);
   returnPage.scale = 0.5;
 
   //barrierImage.setCollider("rectangle",-200, 0, 500, 10, 90);
-  
 
   //backgroundSprite.scale = 0.5;
 
   obstaclesGroup = new Group();
   coinsGroup = new Group();
-
-  
 
   //boyRunning.velocityX = 2;
 }
@@ -165,11 +144,11 @@ function draw() {
   if (gameState == "home") {
     backArrow.visible = false;
     boyRunning.visible = false;
-    backgroundSprite.visible = false;
     gameOverSprite.visible = false;
+    backgroundSprite.visible = false;
     returnPage.visible = false;
   }
-  
+
   if (mousePressedOver(instructions)) {
     gameState = "Instructions";
   }
@@ -246,9 +225,12 @@ function draw() {
   if (gameState == "play") {
     background(0);
 
+    backgroundSprite.velocityX = -10;
+
     if (backgroundSprite.x < 250) {
       backgroundSprite.x = backgroundSprite.width / 2;
     }
+
 
 
     backgroundSprite.visible = true;
@@ -258,23 +240,22 @@ function draw() {
     boy.visible = false;
     backArrow.visible = false;
     boyRunning.visible = true;
-
     backgroundSprite.depth = boy.depth;
     boy.depth = backgroundSprite.depth - 1;
+    
 
     spawnObstacles();
     spawnCoins();
 
-    if(boyRunning.isTouching(coinsGroup)){
+    if (boyRunning.isTouching(coinsGroup)) {
       score = score + 5;
       coinsGroup.destroyEach();
     }
 
-   // obstaclesGroup.setCollider("rectangle",0, 0, 500, 10, 90)
+    // obstaclesGroup.setCollider("rectangle",0, 0, 500, 10, 90)
 
     if (keyDown("space") && boyRunning.y >= height / 2 + 10) {
       boyRunning.velocityY = -10;
-      boyRunning.changeAnimation("jumping", boy_jumping);
     }
 
     boyRunning.velocityY = boyRunning.velocityY + 0.3;
@@ -286,58 +267,56 @@ function draw() {
     if (boyRunning.isTouching(obstaclesGroup)) {
       gameState = "gameOver";
     }
+   
 
-    
-  //  if(score = 200){
+    //  if(score = 200){
 
-  //  }
-    
+    //  }
   }
 
   if (gameState == "gameOver") {
-   
     backgroundSprite.velocityX = 0;
     obstaclesGroup.setVelocityXEach(0);
     coinsGroup.setVelocityXEach(0);
-
-    obstaclesGroup.setLifetimeEach(-1);
     
-    boyRunning.changeAnimation("Image",boyImage);
+    coinsGroup.setLifetimeEach(-1);
+    obstaclesGroup.setLifetimeEach(-1);
+
+    boyRunning.changeAnimation("dead", boy_dead);
     gameOverSprite.visible = true;
     returnPage.visible = true;
 
     backgroundSprite.depth = returnPage.depth;
-    returnPage.depth = backgroundSprite.depth - 1;
+    returnPage.depth = returnPage.depth + 1;
 
     backgroundSprite.depth = gameOverSprite.depth;
-    gameOverSprite.depth = backgroundSprite.depth - 1;
+    gameOverSprite.depth = gameOverSprite.depth + 1;
 
     boyRunning.velocityY = 0;
 
     if (mousePressedOver(returnPage)) {
-      gameState = "home";
+      gameState = "play";
       obstaclesGroup.destroyEach();
       coinsGroup.destroyEach();
-      play.visible = true;
-      instructions.visible = true;
-      boy.visible = true;
-      backgroundSprite.velocityX = -10;
+      //play.visible = true;
+      //instructions.visible = true;
+      //boy.visible = true;
+     // backgroundSprite.velocityX = -10;
+
+     gameOverSprite.visible = false;
+     returnPage.visible = false;
+      score = 0;
+      boyRunning.changeAnimation("running", boyRunningAnimation);
     }
-
-    score = 0;
-
-    //boyRunning.changeAnimation("change",boy);
   }
-
-
 
   drawSprites();
 
-  if(gameState=="play" || gameState=="gameOver"){
+  if (gameState == "play" || gameState == "gameOver") {
     fill("red");
     textFont("algerian");
     textSize(50);
-    text("Score: "+score, width/2+220, height/2-220);
+    text("Score: " + score, width / 2 + 220, height / 2 - 220);
   }
 }
 function spawnObstacles() {
@@ -352,18 +331,45 @@ function spawnObstacles() {
     switch (rand) {
       case 1:
         obstacle.addImage(destroyedCycleImage);
+        obstacle.setCollider(
+          "rectangle",
+          0,
+          0,
+          obstacle.width,
+          obstacle.height
+        );
         break;
       case 2:
         obstacle.addImage(barrierImage);
+        obstacle.setCollider(
+          "rectangle",
+          0,
+          0,
+          obstacle.width - 200,
+          obstacle.height - 200
+        );
         break;
       case 3:
         obstacle.addImage(destroyedCarImage);
+        obstacle.setCollider(
+          "rectangle",
+          0,
+          0,
+          obstacle.width,
+          obstacle.height
+        );
         break;
       case 4:
         obstacle.addImage(treeLog);
+        obstacle.setCollider(
+          "rectangle",
+          0,
+          0,
+          obstacle.width,
+          obstacle.height
+        );
         break;
-      // case 4: obstacle.addImage(treeLog2);
-      //         break;
+
       default:
         break;
     }
@@ -374,8 +380,6 @@ function spawnObstacles() {
     //add each obstacle to the group
     obstaclesGroup.add(obstacle);
     obstaclesGroup.collide(invisibleGround);
-    
-    
   }
 }
 
