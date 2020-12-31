@@ -24,6 +24,8 @@ var blackScreen;
 var gameOverImage, gameOverSprite;
 var returnPage, returnImage;
 var backgroundLevel2, backgroundLevel2Sprite;
+var feedbackBackground1;
+var nextLevel, nextLevelSprite;
 //var sampleBackground, sampleBackgroundImage;
 
 // var gameState = "play";
@@ -83,6 +85,8 @@ function preload() {
   treeLog = loadImage("Images/obstacles/tree log2.png");
   gameOverImage = loadImage("Images/basic images/gameOverImage.png");
   returnImage = loadImage("Images/basic images/reloadIcon.png");
+  feedbackBackground1 = loadImage("Images/backgrounds/level1FeedbackBackground.jpg");
+  nextLevel = loadImage("Images/basic images/next level.png");
 }
 
 function setup() {
@@ -127,6 +131,10 @@ function setup() {
   returnPage.addImage(returnImage);
   returnPage.scale = 0.5;
 
+  nextLevelSprite = createSprite(width/2,height/2+100);
+  nextLevelSprite.addImage(nextLevel);
+  nextLevelSprite.scale = 0.5;
+
   //barrierImage.setCollider("rectangle",-200, 0, 500, 10, 90);
 
   //backgroundSprite.scale = 0.5;
@@ -142,11 +150,14 @@ function draw() {
   background(stormGif);
 
   if (gameState == "home") {
+
+     nextLevelSprite.visible = false;
     backArrow.visible = false;
     boyRunning.visible = false;
     gameOverSprite.visible = false;
     backgroundSprite.visible = false;
     returnPage.visible = false;
+   
   }
 
   if (mousePressedOver(instructions)) {
@@ -219,10 +230,10 @@ function draw() {
   }
 
   if (mousePressedOver(play)) {
-    gameState = "play";
+    gameState = "Level1";
   }
 
-  if (gameState == "play") {
+  if (gameState == "Level1") {
     background(0);
 
     backgroundSprite.velocityX = -10;
@@ -268,7 +279,10 @@ function draw() {
       gameState = "gameOver";
     }
    
+    if(score == 10){
+      gameState = "Level1Feedback";
 
+    }
     //  if(score = 200){
 
     //  }
@@ -295,10 +309,10 @@ function draw() {
     boyRunning.velocityY = 0;
 
     if (mousePressedOver(returnPage)) {
-      gameState = "play";
+      gameState = "Level1";
       obstaclesGroup.destroyEach();
       coinsGroup.destroyEach();
-      //play.visible = true;
+      //Level1.visible = true;
       //instructions.visible = true;
       //boy.visible = true;
      // backgroundSprite.velocityX = -10;
@@ -312,11 +326,27 @@ function draw() {
 
   drawSprites();
 
-  if (gameState == "play" || gameState == "gameOver") {
+  if (gameState == "Level1" || gameState == "gameOver") {
     fill("red");
     textFont("algerian");
     textSize(50);
     text("Score: " + score, width / 2 + 220, height / 2 - 220);
+
+   
+  }
+
+  if(gameState == "Level1Feedback"){
+    background(feedbackBackground1);
+
+    textSize(45);
+    textFont("Comic Sans MS");
+    fill("yellow");
+    text("Congratulations you have completed the 1st level",width/2-500,height/2);
+
+    nextLevelSprite.visible = true;
+
+    feedbackBackground1.depth = nextLevelSprite.depth;
+    nextLevelSprite.depth = nextLevelSprite.depth + 1;
   }
 }
 function spawnObstacles() {
